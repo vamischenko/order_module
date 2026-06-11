@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -12,23 +13,28 @@ class OrderController extends Controller
         return view('home');
     }
 
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        $validated = $request->validate([
-            'name'    => 'required|string|max:255',
-            'email'   => 'required|email|max:255',
-            'message' => 'required|string|min:10|max:2000',
-        ]);
-
-        Order::create($validated);
+        Order::create($request->validated());
 
         return redirect()->route('home')->with('success', 'Ваша заявка успешно отправлена!');
     }
 
-    public function list()
+    public function list(Request $request)
     {
-        $orders = Order::latest()->paginate(20);
+        $search = $request->string('search')->trim()->value();
 
-        return view('orders', compact('orders'));
+        $orders = Order::query()
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('orders', compact('orders', 'search'));
     }
 }

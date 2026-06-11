@@ -10,10 +10,30 @@
         <a href="{{ route('home') }}" class="btn btn--outline">← Назад</a>
     </div>
 
+    <form class="orders-search" action="{{ route('orders.list') }}" method="GET">
+        <input
+            class="orders-search__input"
+            type="search"
+            name="search"
+            value="{{ $search }}"
+            placeholder="Поиск по имени или email"
+            maxlength="255"
+        >
+        <button class="btn" type="submit">Найти</button>
+        @if ($search !== '')
+            <a href="{{ route('orders.list') }}" class="btn btn--outline">Сбросить</a>
+        @endif
+    </form>
+
     @if ($orders->isEmpty())
         <div class="orders-empty">
-            <p>Заявок пока нет.</p>
-            <a href="{{ route('home') }}#order-form" class="btn" style="margin-top:1rem">Оставить первую заявку</a>
+            @if ($search !== '')
+                <p>По запросу «{{ $search }}» ничего не найдено.</p>
+                <a href="{{ route('orders.list') }}" class="btn btn--outline" style="margin-top:1rem">Показать все заявки</a>
+            @else
+                <p>Заявок пока нет.</p>
+                <a href="{{ route('home') }}#order-form" class="btn" style="margin-top:1rem">Оставить первую заявку</a>
+            @endif
         </div>
     @else
         <div class="table-wrapper">
@@ -69,6 +89,31 @@
     .orders-header h1 {
         font-size: 1.6rem;
         color: #1e3a8a;
+    }
+
+    .orders-search {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .orders-search__input {
+        flex: 1;
+        min-width: 200px;
+        padding: 0.65rem 0.9rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: inherit;
+        background: #fafafa;
+    }
+
+    .orders-search__input:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        background: #fff;
     }
 
     .orders-empty {
