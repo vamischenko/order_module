@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Сервисный центр')</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/app.css">
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -59,6 +60,24 @@
             text-decoration: underline;
         }
 
+        .nav-logout {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.6);
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-left: 1.5rem;
+            opacity: 0.9;
+            transition: opacity 0.2s, background 0.2s;
+        }
+
+        .nav-logout:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.15);
+        }
+
         footer {
             text-align: center;
             padding: 1.5rem;
@@ -94,7 +113,15 @@
         <a href="{{ route('home') }}" class="logo">СервисПро</a>
         <nav>
             <a href="{{ route('home') }}">Главная</a>
-            <a href="{{ route('orders.list') }}">Заявки</a>
+            @auth
+                <a href="{{ route('orders.list') }}">Заявки</a>
+                <form action="{{ route('logout') }}" method="POST" style="display:inline">
+                    @csrf
+                    <button type="submit" class="nav-logout">Выйти</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}">Войти</a>
+            @endauth
         </nav>
     </header>
 

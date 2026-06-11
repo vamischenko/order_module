@@ -39,7 +39,7 @@
     <h2>Оставьте заявку</h2>
     <p class="form-section__subtitle">Заполните форму, и мы свяжемся с вами в течение рабочего дня</p>
 
-    <form class="form" action="{{ route('orders.store') }}" method="POST" novalidate>
+    <form class="form" action="{{ route('orders.store') }}" method="POST">
         @csrf
 
         <div class="form__group">
@@ -51,6 +51,8 @@
                 name="name"
                 value="{{ old('name') }}"
                 placeholder="Введите ваше имя"
+                required
+                maxlength="255"
             >
             @error('name')
                 <span class="form__error">{{ $message }}</span>
@@ -66,6 +68,8 @@
                 name="email"
                 value="{{ old('email') }}"
                 placeholder="example@mail.com"
+                required
+                maxlength="255"
             >
             @error('email')
                 <span class="form__error">{{ $message }}</span>
@@ -79,6 +83,9 @@
                 id="message"
                 name="message"
                 placeholder="Опишите вашу задачу (минимум 10 символов)"
+                required
+                minlength="10"
+                maxlength="2000"
             >{{ old('message') }}</textarea>
             @error('message')
                 <span class="form__error">{{ $message }}</span>
@@ -152,24 +159,6 @@
         text-align: center;
     }
 
-    /* Кнопка */
-    .btn {
-        display: inline-block;
-        background: #2563eb;
-        color: #fff;
-        padding: 0.75rem 2rem;
-        border-radius: 8px;
-        border: none;
-        font-size: 1rem;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background 0.2s;
-    }
-
-    .btn:hover {
-        background: #1d4ed8;
-    }
-
     /* Форма */
     .form-section {
         background: #fff;
@@ -190,56 +179,6 @@
         color: #64748b;
         font-size: 0.95rem;
         margin-bottom: 1.5rem;
-    }
-
-    .form__group {
-        margin-bottom: 1.25rem;
-    }
-
-    .form__label {
-        display: block;
-        font-weight: 600;
-        font-size: 0.9rem;
-        margin-bottom: 0.4rem;
-        color: #374151;
-    }
-
-    .required {
-        color: #ef4444;
-    }
-
-    .form__input {
-        width: 100%;
-        padding: 0.65rem 0.9rem;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-family: inherit;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        background: #fafafa;
-    }
-
-    .form__input:focus {
-        outline: none;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
-        background: #fff;
-    }
-
-    .form__input--error {
-        border-color: #ef4444;
-    }
-
-    .form__textarea {
-        resize: vertical;
-        min-height: 120px;
-    }
-
-    .form__error {
-        display: block;
-        color: #ef4444;
-        font-size: 0.85rem;
-        margin-top: 0.3rem;
     }
 
     /* Адаптив */

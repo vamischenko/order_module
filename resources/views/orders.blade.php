@@ -40,6 +40,12 @@
                 </tbody>
             </table>
         </div>
+
+        @if ($orders->hasPages())
+            <div class="pagination-wrapper">
+                {{ $orders->links() }}
+            </div>
+        @endif
     @endif
 </section>
 
@@ -63,32 +69,6 @@
     .orders-header h1 {
         font-size: 1.6rem;
         color: #1e3a8a;
-    }
-
-    .btn {
-        display: inline-block;
-        background: #2563eb;
-        color: #fff;
-        padding: 0.6rem 1.5rem;
-        border-radius: 8px;
-        text-decoration: none;
-        font-size: 0.95rem;
-        transition: background 0.2s;
-    }
-
-    .btn:hover {
-        background: #1d4ed8;
-    }
-
-    .btn--outline {
-        background: transparent;
-        border: 2px solid #2563eb;
-        color: #2563eb;
-    }
-
-    .btn--outline:hover {
-        background: #2563eb;
-        color: #fff;
     }
 
     .orders-empty {
@@ -143,6 +123,50 @@
         white-space: nowrap;
         color: #64748b;
         font-size: 0.88rem;
+    }
+
+    .pagination-wrapper {
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .pagination-wrapper nav {
+        display: flex;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pagination-wrapper span,
+    .pagination-wrapper a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2rem;
+        height: 2rem;
+        padding: 0 0.5rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        border: 1px solid #e2e8f0;
+        color: #374151;
+        text-decoration: none;
+        transition: background 0.15s, color 0.15s;
+    }
+
+    .pagination-wrapper a:hover {
+        background: #f1f5f9;
+    }
+
+    .pagination-wrapper span[aria-current="page"] > span {
+        background: #2563eb;
+        color: #fff;
+        border-color: #2563eb;
+    }
+
+    .pagination-wrapper span.disabled {
+        opacity: 0.4;
+        pointer-events: none;
     }
 
     @media (max-width: 600px) {

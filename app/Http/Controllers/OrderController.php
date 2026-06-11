@@ -14,20 +14,20 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name'    => 'required|string|max:255',
             'email'   => 'required|email|max:255',
-            'message' => 'required|string|min:10',
+            'message' => 'required|string|min:10|max:2000',
         ]);
 
-        Order::create($request->only(['name', 'email', 'message']));
+        Order::create($validated);
 
         return redirect()->route('home')->with('success', 'Ваша заявка успешно отправлена!');
     }
 
     public function list()
     {
-        $orders = Order::latest()->get();
+        $orders = Order::latest()->paginate(20);
 
         return view('orders', compact('orders'));
     }
